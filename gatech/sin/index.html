@@ -1,0 +1,129 @@
+<html>
+  <head>
+    <meta content="text/html; charset=windows-1252" http-equiv="content-type">
+    <title>From Stochastic Grammar to Bayes Network: Probabilistic Parsing of
+      Complex Activity</title>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82910408-1', 'auto');
+  ga('send', 'pageview', location.pathname);
+
+</script>
+
+
+  </head>
+  <body>
+    <div style="text-align: center;"><br>
+      <h1><span style="font-weight: bold;"><span style="font-weight: bold;">From
+            Stochastic Grammar to Bayes Network: <br>
+          </span></span></h1>
+      <h1><span style="font-weight: bold;"><span style="font-weight: bold;">Probabilistic
+            Parsing of Complex Activity</span></span></h1>
+      <h1><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span></h1>
+      <span style="font-weight: bold;"><span style="font-weight: bold;"><br>
+          <a href="../">Nam N. Vo&nbsp;</a>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <a href="http://www.cc.gatech.edu/%7Eafb/">Aaron
+            F. Bobick</a><br>
+          <br>
+        </span><br>
+      </span>
+      <div style="text-align: left;">
+        <h2>Abstract</h2>
+        <!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>  <o:AllowPNG/> </o:OfficeDocumentSettings></xml><![endif]-->
+        <p class="MsoNormal"><span style="font-size:12.0pt;line-height:115%;font-family:
+&quot;Times New Roman&quot;,&quot;serif&quot;;mso-fareast-font-family:&quot;Times New Roman&quot;">We
+            propose a probabilistic method for parsing a temporal sequence such
+            as a complex activity defined as composition of
+            sub-activities/actions. The temporal structure of the high-level
+            activity is represented by a string-length limited stochastic
+            context-free grammar. Given the grammar, a Bayes network, which we
+            term Sequential Interval Network (SIN), is generated where the
+            variable nodes correspond to the start and end times of component
+            actions. The network integrates information about the duration of
+            each primitive action, visual detection results for each primitive
+            action, and the activity's temporal structure. At any moment in time
+            during the activity, message passing is used to perform exact
+            inference yielding the posterior probabilities of the start and end
+            times for each different activity/action. We provide demonstrations
+            of this framework being applied to vision tasks such as action
+            prediction, classification of the high-level activities or temporal
+            segmentation of a test sequence; the method is also applicable in
+            Human Robot Interaction domain where continual prediction of human
+            action is needed.<br>
+            <br>
+          </span></p>
+        <h2> Sequential Interval Network</h2>
+        Different from time sliced graphical models (HMM, DBN, temporal CRF),
+        our network models the timings of the primitive components (in our
+        application: the actions) instead of the state of each time-step; thus
+        allowing principle reasoning on interval level (for example: duration).<br>
+        To parse a simple activity <span style="font-weight: bold;">S</span>
+        defined as a sequence of <span style="font-weight: bold;">a, b, c</span>,
+        the following network is generated, where variables are the start &amp;
+        end time of each action:<br>
+        <div style="text-align: center;"><img style="width: 549px; height: 89px;"
+            title="X" alt="X" src="abc.png"><br>
+        </div>
+        The condition probabilities encode the temporal constraints (for example
+        <span style="font-weight: bold;">b</span> starts when <span style="font-weight: bold;">a</span>
+        ends) and prior knowledge about each action's duration (for example when
+        should <span style="font-weight: bold;">a</span> ends given its start
+        time). Then evidence can be added:<br>
+        <div style="text-align: center;"><img style="width: 545px; height: 241px;"
+            title="X" alt="X" src="sabc.png"><br>
+          <br>
+          <br>
+        </div>
+        The factor graph representation:<br>
+        <div style="text-align: center;"><img style="width: 629px; height: 223px;"
+            alt="" src="abc_factorgraph.png"><br>
+          <div style="text-align: left;">With a chain like structure, forward
+            backward message passing inference can be done on this network to
+            obtain the posterior of the variables.<br>
+            <br>
+            <h2>Experiment Result</h2>
+            <ul>
+              <li>Toy assembly activity: qualitative result [<a href="https://www.youtube.com/watch?v=u-UzvndIK78">Supplementary
+                  Video</a>]. Application in Human-Robot Collaboration [<a href="http://youtu.be/11cWODYOXPk">Video</a>].</li>
+              <li><a href="http://www.wisdom.weizmann.ac.il/%7Evision/SpaceTimeActions.html">Weizmann
+                  action</a> synthetic data: segmentation accuracy 93%
+                (state-of-the-art 88%).</li>
+              <li><a href="http://www.cc.gatech.edu/%7Eafathi3/GTEA/">GTEA</a>
+                dataset: best segmentation accuracy 58% (state-of-the-art 42%).</li>
+              <li><a href="http://kitchen.cs.cmu.edu/">CMU-MMAC</a>, <a href="http://www.cs.cmu.edu/%7Eespriggs/cmu-mmac/annotations/">making
+                  Brownie activity</a> (ego-centric video): best segmentation
+                accuracy 59% (state-of-the-art 32%).</li>
+            </ul>
+          </div>
+        </div>
+        <h2>Code &amp; Data</h2>
+        <ul>
+          <li> <a href="sin1.0.zip">SIN1.0</a></li>
+          <li><a href="http://www.mediafire.com/download/11d2yrdk4d6ymxo/toy_assembly.zip">Toy
+              assembly data &amp; code</a></li>
+        </ul>
+        <h2>Paper</h2>
+        <ul>
+          <li>From Stochastic Grammar to Bayes Network: Probabilistic Parsing of
+            Complex Activity. Nam N. Vo and Aaron F. Bobick<br>
+            CVPR 2014 [<a href="http://www.cv-foundation.org/openaccess/content_cvpr_2014/papers/Vo_From_Stochastic_Grammar_2014_CVPR_paper.pdf">Paper</a>]
+            [<a href="sup.pdf">Supplementary document</a>]</li>
+          <li>Sequential Interval Network for Parsing Complex Structured
+            Activity. [<a href="sin_journal.pdf">Journal draft</a>]</li>
+        </ul>
+        <h2> <span style="font-weight: bold;">Acknowledgement</span></h2>
+        <h2><span style="font-weight: bold;"></span></h2>
+        We'd like to thank Alireza Fathi for providing data on GTEA dataset.
+        This work was supported in part by BMW project #RD441.<br>
+        <br>
+        <br>
+        <span style="font-weight: bold;"></span></div>
+      <span style="font-weight: bold;"> </span></div>
+  </body>
+</html>

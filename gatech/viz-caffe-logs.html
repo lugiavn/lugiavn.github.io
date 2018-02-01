@@ -1,0 +1,154 @@
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="https://d14fo0winaifog.cloudfront.net/plotly-basic.js"></script>
+</head>
+<body>
+	Viz caffe.INFO log files <br>
+	<textarea id="caffe_log" rows=10 cols=100></textarea> <br>
+	<button onClick="doshit()">Do Shit</button>
+	<hr>
+	<div ><div id="p1"></div></div> <hr>
+	<div ><div id="p2"></div></div> <hr>
+	<div ><div id="p3"></div></div> <hr>
+	<div ><div id="p4"></div></div> <hr>
+	<div ><div id="p5"></div></div> <hr>
+
+
+
+</body>
+
+	<script type="text/javascript">
+
+		function doshit() {
+
+			var caffelog = document.getElementById("caffe_log").value;
+			var lines = caffelog.split("\n");
+
+			// data
+			var losses = [];
+			var iters  = [];
+			var accuracies = [];
+			var a_iters = [];
+            var val_losses = [];
+            var val_losses_iter = [];
+            var train_accs = [];
+            var train_accs_iter = [];
+
+			// read
+			var iter = 0;
+			var t = '';
+			for (var i = 0; i < lines.length; i++) {
+				// get iter
+				var a = lines[i].indexOf("Iteration "); 
+				var b = lines[i].indexOf(","); 
+				if (a >= 0 && b >= 0)
+					iter = parseFloat(lines[i].substring(a + 10, b));
+
+				// get training loss
+				a = lines[i].indexOf(", loss = ");
+				if (a >= 0) {
+					var loss = parseFloat(lines[i].substring(a + 9));
+					losses[losses.length] = loss;
+					iters[iters.length] = iter;
+				}
+
+				// get validation loss
+				a = lines[i].indexOf("Test");
+				b = lines[i].indexOf(": loss = ");
+				if (a >= 0 && b >= 0) {
+					var loss = parseFloat(lines[i].substring(b + 9));
+					val_losses[val_losses.length] = loss;
+					val_losses_iter[val_losses_iter.length] = iter;
+				}
+
+				// get training accuracy
+				a = lines[i].indexOf("Train");
+				b = lines[i].indexOf("accuracy = ");
+				if (a >= 0 && b >= 0) {
+					var accuracy = parseFloat(lines[i].substring(b + 11));
+					train_accs[train_accs.length] = accuracy;
+				    train_accs_iter[train_accs_iter.length] = iter;
+				}
+
+				// get test accuracy
+				a = lines[i].indexOf("Test");
+				b = lines[i].indexOf("accuracy = ");
+				if (a >= 0 && b >= 0) {
+					var accuracy = parseFloat(lines[i].substring(b + 11));
+					accuracies[accuracies.length] = accuracy;
+				    a_iters[a_iters.length] = iter;
+				}
+
+				/*
+				var j = lines[i].indexOf("Iteration "); 
+				var b = lines[i].indexOf(","); 
+				var k = lines[i].indexOf(", loss = ");
+				var h = lines[i].indexOf("accuracy = ");
+                var v = lines[i].indexOf("Test net output #0: loss = ");
+                var s = lines[i].indexOf(" ");
+
+				if (j >= 0 && b >= 0)
+				  iter = parseFloat(lines[i].substring(j + 10, b));
+
+				if (j >= 0 && k >= 0) {
+				  var loss = parseFloat(lines[i].substring(k + 9));
+				  losses[losses.length] = loss;
+				  iters[iters.length] = iter;
+				}
+				if (h >= 0) {
+				  var accuracy = parseFloat(lines[i].substring(h + 11));
+				  accuracies[accuracies.length] = accuracy;
+				}
+				if (v >= 0) {
+				  v_losses[v_losses.length] = parseFloat(lines[i].substring(v + 27,v + 27 + 7));
+				  a_iters[a_iters.length] = iter;
+				}
+				*/
+			}
+
+			// show shit
+			var p = document.getElementById('p1');
+			Plotly.plot( p, 
+				[{
+					name: 'Training loss',
+					x: iters,
+					y: losses 
+				}, {
+					name: 'Validation loss',
+					x: val_losses_iter,
+					y: val_losses 
+				}], 
+				{
+					title: 'Training loss',
+					margin: { t: 0 } ,
+					xaxis: {title: 'Iters'},
+					yaxis: {title: 'Loss'}
+				} 
+			);
+
+			var p = document.getElementById('p2');
+			Plotly.plot( p, 
+				[{
+					name: 'training accuracy',
+					x: train_accs_iter,
+					y: train_accs
+				}, {
+					name: 'Val accuracy',
+					x: a_iters,
+					y: accuracies
+				}], 
+				{
+					title: 'Val Accuracy',
+					margin: { t: 0 } ,
+					xaxis: {title: 'Iters'},
+					yaxis: {title: 'Accuracy'}
+				} 
+			);
+
+
+
+
+
+		}
+	</script>

@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  
+  <meta content="text/html; charset=windows-1252" http-equiv="content-type">
+  <title>Localizing and Orienting Street Views Using Overhead Imagery</title>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82910408-1', 'auto');
+  ga('send', 'pageview', location.pathname);
+
+</script>
+
+  
+</head><body>
+<center> <br>
+<h1> <b> Localizing and Orienting Street Views Using Overhead Imagery </b>
+</h1>
+<br>
+<a href="../"><span style="font-weight: bold;">Nam N. Vo</span></a>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.cc.gatech.edu/%7Ehays/"><span style="font-weight: bold;">James Hays</span></a><br>
+<br>
+<div style="text-align: left;">
+<h3> Abstract </h3>
+</div>
+<div style="text-align: justify;">In this paper we aim to determine the
+location and orientation of a ground-level query image by matching to a
+reference database of overhead (e.g. satellite) images. For this task
+we collect a new dataset with one million pairs of street view and
+overhead images sampled from eleven U.S. cities. We explore several
+deep CNN architectures for cross-domain matching -- Classification,
+Hybrid, Siamese, and Triplet networks. Classification and Hybrid
+architectures are accurate but slow since they allow only partial
+feature precomputation. We propose a new loss function which
+significantly improves the accuracy of Siamese and Triplet embedding
+networks while maintaining their applicability to large-scale retrieval
+tasks like image geolocalization.&nbsp; This image matching task is
+challenging not just because of the dramatic viewpoint difference
+between ground-level and overhead imagery but because the orientation
+(i.e. azimuth) of the street views is unknown making correspondence
+even more difficult. We examine several mechanisms to match in spite of
+this -- training for rotation invariance, sampling possible rotations
+at query time, and explicitly predicting relative rotation of ground
+and overhead images with our deep networks. It turns out that explicit
+orientation supervision \textit{also} improves matching accuracy. Our
+best performing architectures are roughly 2.5 times as accurate as the
+commonly used Siamese network baseline.<br>
+<div style="text-align: center;"><br>
+<br>
+</div>
+</div>
+<br>
+<div style="text-align: left;">
+<h3> The problem &amp; a new large scale dataset:<br>
+</h3>
+</div>
+<br>
+<img style="width: 811px; height: 221px;" alt="" src="problem.png"><br>
+<br>
+<br>
+<br>
+<div style="text-align: left;">
+<h3>Deep network architectures experimented:<br>
+</h3>
+</div>
+<img style="width: 811px; height: 221px;" alt="" src="cnn.png"><br>
+<br>
+<br>
+<div style="text-align: left;">
+<h3>New distance based logistic log loss for Siamese &amp; triplet
+network<br>
+</h3>
+</div>
+<img style="width: 811px; height: 270px;" alt="" src="tripletloss.png"><br>
+<br>
+<br>
+<div style="text-align: left;">
+<h3> Rotation invariance by data augmentation &amp; orientation
+regression<br>
+</h3>
+</div>
+<img style="width: 627px; height: 260px;" alt="" src="or.png"><br>
+<br>
+<div style="text-align: left;">
+<h3>Download</h3>
+<ul>
+  <li> Data & training code: <a href="https://github.com/lugiavn/gt-crossview">GTCrossView</a><br>
+  </li>
+  <li>Paper: <a href="nam_eccv2016.pdf">Localizing and Orienting Street Views Using Overhead
+Imagery</a>, ECCV 2016<br>
+  </li>
+  <li> <a href="eccv16_poster.pdf">poster</a> </li> 
+</ul>
+<br>
+</div>
+</center>
+
+</body></html>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  
+  <meta content="text/html; charset=windows-1252" http-equiv="content-type">
+  <title>
+    Revisiting IM2GPS in the Deep Learning Era
+  </title>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82910408-1', 'auto');
+  ga('send', 'pageview', location.pathname);
+
+</script>
+
+  
+</head>
+<body>
+<center> 
+<br>
+<h1> <b>Revisiting IM2GPS in the Deep Learning Era</b>
+</h1>
+<br>
+<a href="../"><span style="font-weight: bold;">Nam Vo</span></a>
+&nbsp; &nbsp; &nbsp; &nbsp; 
+<a href="http://cs.uky.edu/~jacobs/"><span style="font-weight: bold;">Nathan Jacobs</span></a>
+&nbsp; &nbsp; &nbsp; &nbsp; 
+<a href="http://www.cc.gatech.edu/%7Ehays/"><span style="font-weight: bold;">James Hays</span></a>
+<br>
+</center>
+<br>
+<div style="text-align: left;">
+<h3> Abstract </h3>
+</div>
+<div style="text-align: justify;">
+  Image geolocalization, inferring the geographic location of an image, is a challenging computer vision problem with many potential applications. The recent state-of-the-art approach to this problem is a deep image classification approach in which the world is spatially divided into cells and a deep network is trained to predict the correct cell for a given image. We propose to combine this approach with the original Im2GPS approach in which a query image is matched against a database of geotagged images and the location is inferred from the retrieved set. We estimate the geographic location of a query image by applying kernel density estimation to the locations of its nearest neighbors in the reference database. Interestingly, we find that the best features for our retrieval task are derived from networks trained with classification loss even though we do not use a classification approach at test time. Training with classification loss outperforms several deep feature learning methods (e.g. Siamese networks with contrastive of triplet loss) more typical for retrieval applications. Our simple approach achieves state-of-the-art geolocalization accuracy while also requiring significantly less training data. 
+  <br>
+</div>
+<br>
+<h3>Image geolocalization by image classification (PlaNet)</h3>
+<center> 
+<img src="quantizations.jpg" width=800 />
+<br>
+<img src="classification.jpg" width=800 />
+<br>
+<br>
+<br>
+</center>
+<h3>Image geolocalization by image retrieval (IM2GPS)</h3>
+<center> 
+<img src="pipeline.png" width=800 />
+<br>
+<img src="retrieval.jpg" width=800 />
+<br>
+<br>
+<br>
+</center>
+<h3>Comparison</h3>
+<center> 
+<img src="comparison.jpg" width=800 />
+<br>
+<br>
+<br>
+
+</center>
+<h3>Download</h3>
+<ul>
+  <li><a href="https://github.com/lugiavn/revisiting-im2gps">Code & data</a><br>
+</li>
+  <li>Paper: <a href="https://arxiv.org/abs/1705.04838">Revisiting IM2GPS in the Deep Learning Era</a>, ICCV 2017<br>
+  </li>
+</ul>
+<br>
+</div>
+
+</body></html>

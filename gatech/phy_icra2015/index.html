@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <meta content="text/html; charset=windows-1252" http-equiv="content-type">
+    <title>Augmenting Physical State Prediction Through Structured Activity
+      Inference </title>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82910408-1', 'auto');
+  ga('send', 'pageview', location.pathname);
+
+</script>
+
+
+  </head>
+  <body>
+    <center> <br>
+      <h1> <b> Augmenting Physical State Prediction <br>
+        </b></h1>
+      <h1><b>Through Structured Activity Inference </b> </h1>
+      <br>
+      <a href="../"><span style="font-weight: bold;">Nam N. Vo</span></a> &nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="http://www.cc.gatech.edu/%7Eafb/"><span
+          style="font-weight: bold;">Aaron F. Bobick </span></a><br>
+      <br>
+      <div style="text-align: left;">
+        <h3> Abstract </h3>
+      </div>
+      <div style="text-align: justify;"> We address the problem of predicting
+        the physical state of a an agent performing a known activity. In
+        particular we are interested in predicting human movement during complex
+        composite activities. Our proposed framework combines a graphical model
+        that extends the Sequential Interval Network (SIN) [2] for modeling
+        global temporal structure of activities with a low level dynamic system
+        for modeling the dynamics of the physical state. Specifically, two sets
+        of new hidden state variables are added: one with respect to the
+        temporal structure and one with respect to time. A mapping factor is
+        defined to ensure these variables values remain consistent and hence
+        allows fusing the two sources of information. We then derive an
+        inference algorithm for computing the posterior densities of the hidden
+        variables. The system can run in an on-line predictive mode to recognize
+        on-going activity and make predictions arbitrarily far in the future
+        during execution of the activity. Experiments illustrate that the long
+        term prediction performance benefits from the knowledge about the
+        temporal structure of the activity while short term prediction
+        performance is improved by incorporating the dynamics of physical state.<br>
+        <br>
+        <br>
+        <div style="text-align: center;"><img alt="System Pipeline" src="phyprop_pipeline.png"><br>
+          <h3><span style="font-weight: bold;">The System Pipeline</span></h3>
+          <br>
+          <br>
+          <img style="width: 619px; height: 335px;" alt="Architecture" src="continuous_state_network.png"><br>
+          <h3>The Architecture: a Graphical Model</h3>
+        </div>
+        <br>
+      </div>
+      <br>
+      <br>
+      <iframe src="https://www.youtube.com/embed/Mvs2MjVdYAI" allowfullscreen=""
+        frameborder="0" height="315" width="560"></iframe> <br>
+      <h3>Demonstration</h3>
+      <br>
+      <br>
+      <br>
+      <div style="text-align: left;"> <br>
+        <h3>Download</h3>
+        <ul>
+          <li> <a href="ICRA_upload.zip">Messy code</a></li>
+          <li><a href="https://ias.in.tum.de/software/kitchen-activity-data">Dataset</a></li>
+        </ul>
+        <br>
+        <h3>Papers</h3>
+        <p>[1] <a href="nam_icra2015.pdf">Augmenting Physical State Prediction
+            Through Structured Activity Inference. </a> ICRA 2015 </p>
+        <p>[2] <a href="../sin/">From Stochastic Grammar to Bayes
+            Network:Probabilistic Parsing of Complex Activity</a>, CVPR 2014</p>
+        <br>
+        <br>
+      </div>
+    </center>
+  </body>
+</html>

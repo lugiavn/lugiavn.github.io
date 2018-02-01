@@ -1,0 +1,751 @@
+<head>
+  <title>Caffe Network Editor</title>
+</head>
+<body bgcolor="black">
+  <font color=white size=10>Caffe network editor<font>
+  (<a href=http://www.cc.gatech.edu/~nvo9/>Nam Vo</a>)
+  <hr> 
+
+
+  <table>
+    <tr>
+      <td><canvas id="c" height=1900 width=500></canvas></td>
+      <td valign=top>
+          <button id='showconbut'> ZZZ </button> <button id='addbut'>Add new layer</button>  <button id='delbut'>Delete layer</button> <br> 
+          <textarea id="e" rows=50 cols=80></textarea> <br> 
+      </td>
+    </tr>
+  </table>
+  
+  <hr>
+  <button id='genbut'>Gen</button>  <br> 
+  <textarea id="x" rows=10 cols=100>
+  </textarea>
+  <hr> <button id='loadbut'>Load</button>  <br>
+  
+  <textarea id="n" rows=10 cols=100>
+name: "AlexNet"
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "data/ilsvrc12/imagenet_mean.binaryproto"
+  }
+  data_param {
+    source: "examples/imagenet/ilsvrc12_train_lmdb"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    mirror: false
+    crop_size: 227
+    mean_file: "data/ilsvrc12/imagenet_mean.binaryproto"
+  }
+  data_param {
+    source: "examples/imagenet/ilsvrc12_val_lmdb"
+    batch_size: 50
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "conv1"
+  top: "conv1"
+}
+layer {
+  name: "norm1"
+  type: "LRN"
+  bottom: "conv1"
+  top: "norm1"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "norm1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "norm2"
+  type: "LRN"
+  bottom: "conv2"
+  top: "norm2"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "norm2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+}
+layer {
+  name: "conv4"
+  type: "Convolution"
+  bottom: "conv3"
+  top: "conv4"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "relu4"
+  type: "ReLU"
+  bottom: "conv4"
+  top: "conv4"
+}
+layer {
+  name: "conv5"
+  type: "Convolution"
+  bottom: "conv4"
+  top: "conv5"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "relu5"
+  type: "ReLU"
+  bottom: "conv5"
+  top: "conv5"
+}
+layer {
+  name: "pool5"
+  type: "Pooling"
+  bottom: "conv5"
+  top: "pool5"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "fc6"
+  type: "InnerProduct"
+  bottom: "pool5"
+  top: "fc6"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "relu6"
+  type: "ReLU"
+  bottom: "fc6"
+  top: "fc6"
+}
+layer {
+  name: "drop6"
+  type: "Dropout"
+  bottom: "fc6"
+  top: "fc6"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc7"
+  type: "InnerProduct"
+  bottom: "fc6"
+  top: "fc7"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.1
+    }
+  }
+}
+layer {
+  name: "relu7"
+  type: "ReLU"
+  bottom: "fc7"
+  top: "fc7"
+}
+layer {
+  name: "drop7"
+  type: "Dropout"
+  bottom: "fc7"
+  top: "fc7"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc8"
+  type: "InnerProduct"
+  bottom: "fc7"
+  top: "fc8"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1000
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "fc8"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "fc8"
+  bottom: "label"
+  top: "loss"
+}
+
+  </textarea>
+  <hr>
+
+</body>
+
+<script>
+var layerid = -1;
+var net = {};
+var showcon = false;
+
+var seed = 1;
+function random() {
+    var x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+
+function get_layer_name(text) {
+    var name = '';
+    var state = 0;
+    for (var i = 4; i < text.length; i++) {
+        if (text[i] == '"' && state == 2)
+            state = 3;
+        if (state == 2)
+            name = name + text[i];
+        if (text.substring(i - 3, i + 1) == 'name')
+            state = 1;
+        if (text[i] == '"' && state == 1)
+            state = 2;
+    }
+    return name;
+}
+
+function get_layer_tops(text) {
+    var i1 = text.indexOf("top:"); if (i1 == -1) return [];
+    var i2 = text.substring(i1).indexOf('"');
+    var i3 = text.substring(i1 + i2 + 1).indexOf('"');
+    var tops = get_layer_tops(text.substring(i1 + i2 + i3 + 1));
+    tops.splice(0, 0, text.substring(i1 + i2 + 1, i1 + i2 + i3 + 1));
+    return tops;
+}
+
+function get_layer_bottoms(text) {
+    var i1 = text.indexOf("bottom:"); if (i1 == -1) return [];
+    var i2 = text.substring(i1).indexOf('"');
+    var i3 = text.substring(i1 + i2 + 1).indexOf('"');
+    var bottoms = get_layer_bottoms(text.substring(i1 + i2 + i3 + 1));
+    bottoms.splice(0, 0, text.substring(i1 + i2 + 1, i1 + i2 + i3 + 1));
+    return bottoms;
+}
+
+function intersect(a, b) {
+    var t;
+    if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+    return a.filter(function (e) {
+        if (b.indexOf(e) !== -1) return true;
+    });
+}
+
+function draw_network() {
+    // resize
+    var layers = net.layers;
+    var c = document.getElementById("c");
+    c.width = net.figure.w;
+    c.height = net.figure.h;
+    var ctx = c.getContext("2d");
+
+    // clear
+    ctx.clearRect(0, 0, c.width, c.height);
+    ctx.fillStyle="#FFFFFF";
+    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.stroke();
+    ctx.fillStyle="#000000";
+
+
+    // draw connections
+    for (var i = 0; i < layers.length; i++)
+    for (var j = i + 1; j < layers.length; j++) 
+    if (net.conn[i][j])
+    if (!net.layers[i].inplace && !net.layers[j].inplace)
+    if (net.layers[j].row - net.layers[i].row < 999)
+    {
+        ctx.lineWidth = (i == layerid || j == layerid) ? 3 : 1;
+        ctx.strokeStyle = (i == layerid || j == layerid) ? 'green': 'pink';
+        if (net.layers[j].row - net.layers[i].row < 4)
+        {
+          ctx.lineWidth = (i == layerid || j == layerid) ? 6 : 3;
+          ctx.strokeStyle = (i == layerid || j == layerid) ? 'green': 'red';
+        }
+
+        ctx.beginPath();
+
+        ctx.fillRect(layers[i].x + layers[i].w / 2 - 5, layers[i].y + layers[i].h - 5, 9, 9);
+        ctx.fillRect(layers[j].x + layers[j].w / 2 - 5, layers[j].y - 5, 9, 9);
+
+        ctx.moveTo(layers[i].x + layers[i].w / 2, layers[i].y + layers[i].h);
+        ctx.lineTo(layers[j].x + layers[j].w / 2, layers[j].y);
+
+        ctx.stroke();
+    }
+
+    // draw layer blocks
+    for (var i = 0; i < layers.length; i++) {
+        ctx.beginPath();
+        ctx.lineWidth = "2";
+        ctx.strokeStyle = "blue";
+        if (layerid == i) {
+            ctx.lineWidth = "5";
+            ctx.strokeStyle = "green";
+        }
+        ctx.fillStyle="#EEEEFF";
+        if (layers[i].inplace)
+          ctx.fillStyle="#FFFFAA";
+        ctx.fillRect(layers[i].x, layers[i].y, layers[i].w, layers[i].h);
+        ctx.rect(layers[i].x, layers[i].y, layers[i].w, layers[i].h);
+        ctx.stroke();
+
+        ctx.font = "12px Arial";
+        ctx.fillStyle="#000000";
+        ctx.fillText(layers[i].name, layers[i].x + 5, layers[i].y + 15);
+    }
+
+
+}
+
+function reset_net() {
+  // parse text
+  for (var i = 0; i < net.layers.length; i++) {
+      net.layers[i].name = get_layer_name(net.layers[i].text);
+
+      net.layers[i].tops = get_layer_tops(net.layers[i].text);
+      net.layers[i].bottoms = get_layer_bottoms(net.layers[i].text);
+
+      net.layers[i].inplace = false;
+      if (net.layers[i].tops.length == 1 && net.layers[i].bottoms.length == 1 && 
+          net.layers[i].tops[0] == net.layers[i].bottoms[0]) {
+        net.layers[i].inplace = true;
+      }
+
+      net.layers[i].row = 0;
+      net.layers[i].col = 0;
+  }
+
+  // connections
+  net.conn = new Array(net.layers.length);
+  for (var i = 0; i < net.layers.length; i++) {
+    net.conn[i] = new Array(net.layers.length);
+  }
+  for (var i = 0; i < net.layers.length; i++)
+    for (var j = i + 1; j < net.layers.length; j++) 
+      if (intersect(net.layers[i].tops, net.layers[j].bottoms).length > 0)
+        net.conn[i][j] = 1;
+      else
+        net.conn[i][j] = 0;
+
+  // compute layer row & col & drawing positions
+  var row_num = 1;
+  var col_num = 1;
+  for (var i111 = 0; i111 < 10; i111++)
+  for (var i = 0; i < net.layers.length; i++)
+    for (var j = i + 1; j < net.layers.length; j++)
+    if (net.conn[i][j]) 
+    {
+        if (net.layers[j].inplace)
+          net.layers[j].row = Math.max(net.layers[j].row, net.layers[i].row );
+        else
+          net.layers[j].row = Math.max(net.layers[j].row, net.layers[i].row + 1);
+
+        row_num = Math.max(row_num, 1 + net.layers[j].row);
+    }
+
+  var rowcount = new Array(net.layers.length);
+  for (var i = 0; i < rowcount.length; i++)
+    rowcount[i] = 0;
+  for (var i = 0; i < net.layers.length; i++) {
+    net.layers[i].col = rowcount[net.layers[i].row];
+    rowcount[net.layers[i].row]++;
+    col_num = Math.max(col_num, rowcount[net.layers[i].row]);
+  }
+
+  // for drawing
+  net.figure   = {};
+  net.figure.layer_w = 70;
+  net.figure.layer_h = 20;
+  net.figure.layer_space_x = 40;
+  net.figure.layer_space_y = 40;
+  net.figure.w = 20 + (net.figure.layer_w + net.figure.layer_space_x) * col_num;
+  net.figure.h = 20 + (net.figure.layer_h + net.figure.layer_space_y) * row_num;
+  seed = 33;
+  for (var i = 0; i < net.layers.length; i++) {
+      net.layers[i].x = (net.figure.layer_w + net.figure.layer_space_x) * net.layers[i].col + 
+                        random() * 30  + 
+                        (col_num - rowcount[net.layers[i].row]) * net.figure.w / 3 / (col_num - 1);
+      net.layers[i].y = (net.figure.layer_h + net.figure.layer_space_y) * net.layers[i].row + 10 + random() * 5;
+      net.layers[i].w = net.figure.layer_w;
+      net.layers[i].h = net.figure.layer_h;
+  }
+
+}
+
+function load_prototxt()
+{
+    // layers
+    var prototxt = document.getElementById("n").value; 
+    var layers_text = [];
+    var bracket_count = 0;
+    var current_text = '';
+    for (var i = 0; i < prototxt.length; i++) {
+        if (prototxt[i] == '{')
+            bracket_count++;
+        else if (prototxt[i] == '}')
+            bracket_count--;
+
+        current_text = current_text + prototxt[i];
+
+        if (prototxt[i] == '{' && bracket_count == 1)
+            current_text = '{';
+
+        if (current_text.length > 10 && bracket_count == 0 && prototxt[i] == '}') {
+            layers_text[layers_text.length] = current_text;
+            current_text = '';
+        }
+    }
+
+    net.layers = [];
+    for (var i = 0; i < layers_text.length; i++) {
+        net.layers[i] = {};
+        net.layers[i].text = layers_text[i];
+    }
+
+    // draw
+    layerid = -1;
+    reset_net();
+    draw_network();
+}
+
+function gen_prototxt()
+{
+
+    var text = 'name: "NA"\n';
+    for (var i = 0; i < net.layers.length; i++)
+    {
+        text = text + 'layer ' + net.layers[i].text + '\n';
+    }
+    document.getElementById("x").value = text;
+}
+
+function choose_layer(i)
+{
+    layerid = i;
+    if (i >= 0)
+      document.getElementById("e").value = net.layers[layerid].text;
+    draw_network();
+}
+
+function add_layer()
+{
+    var top = 'Layer' + Math.floor((random() * 1000) + 1);
+    var bottom = 'Layer' + Math.floor((random() * 1000) + 1);
+    if (layerid >= 0 && net.layers[layerid].tops.length > 0)
+      bottom = net.layers[layerid].tops[0];
+
+    var layertext = '{ \n' +
+                    '  name: "' + top + '" \n' +
+                    '  bottom: "' + bottom + '"  \n' +
+                    '  top: "' + top + '"  \n' +
+                    '}\n';
+    net.layers.splice(layerid + 1, 0, { text: layertext });
+
+    reset_net();
+
+    choose_layer(layerid + 1);
+}
+
+function del_layer()
+{
+    if (layerid >= 0) {
+        net.layers.splice(layerid, 1);
+        reset_net();
+        choose_layer(layerid - 1);
+    }
+}
+
+
+load_prototxt();
+
+// click
+c.addEventListener('click', function(event) {
+    var x = event.offsetX; 
+    var y = event.offsetY;
+    for (var i = 0; i < net.layers.length; i++)
+        if (x >= net.layers[i].x && x <= net.layers[i].x + net.layers[i].w && y >= net.layers[i].y && y <= net.layers[i].y + net.layers[i].h)
+            return choose_layer(i);
+}, false);
+
+document.getElementById("e").addEventListener('change', function(event) {
+    if (layerid >= 0) {
+      net.layers[layerid].text = document.getElementById("e").value;
+      reset_net();
+      draw_network();
+    }
+}, false);
+
+document.getElementById("delbut").addEventListener('click', function(event) {
+    del_layer();
+}, false);
+
+document.getElementById("addbut").addEventListener('click', function(event) {
+    add_layer();
+}, false);
+
+
+document.getElementById("loadbut").addEventListener('click', function(event) {
+    load_prototxt();
+}, false);
+
+document.getElementById("genbut").addEventListener('click', function(event) {
+    gen_prototxt();
+}, false);
+
+document.getElementById("showconbut").addEventListener('click', function(event) {
+    showcon = !showcon;
+    draw_network();
+
+}, false);
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
